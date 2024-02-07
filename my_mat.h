@@ -1,7 +1,8 @@
 #include <stdio.h>
 #define J=10
+int A[J][J];
 
-void GetMatritza(int A[J][J]){
+void getMatrix(){
     printf("enter the matritza")
     for (int i=0;i<J;i++){
         for (int l=0;l<J;l++){ 
@@ -10,7 +11,14 @@ void GetMatritza(int A[J][J]){
     }
 }
 
-int isShortest(int A[J][J], int x,int y){
+int isShortest(){
+    int x;
+    int y;
+    printf("enter two parameters");
+    scanf("%d /n", x);
+    scanf("%d /n", y);
+
+
     for (int k=1;k>=J;k++){
         for (int i=0;i<J;i++){
             for (int s=0;s<J;s++){
@@ -26,7 +34,13 @@ int isShortest(int A[J][J], int x,int y){
     else return 0;
 }
 
-int Shortestpath(int A[J][J], int x,int y){
+int shortestPath(){
+    int x;
+    int y;
+    printf("enter two parameters");
+    scanf("%d /n", x);
+    scanf("%d /n", y);
+
     isShortest(A[J][J]);
     return A[x][y];
 }
