@@ -1,53 +1,24 @@
 CC = gcc
-AR = ar
-MAIN = main.c
-NUMCLASS = NumClass.h
-BASIC = basicClassification.o
-LOOP = advancedClassificationLoop.o
-REC = advancedClassificationRecursion.o
-FLAGS= -Wall -g
+CFLAGS = -Wall
 
-all: loops recursives recursived looped mains maindloop maindrec
+.PHONY: all clean
 
-loops: libclassloops.a
-libclassloops.a: $(LOOP) $(BASIC)
-	$(AR) -rcs libclassloops.a $(LOOP) $(BASIC)
+all: my_graph my_Knapsack
 
-recursives: libclassrec.a
-libclassrec.a: $(REC) $(BASIC)
-	$(AR) -rcs libclassrec.a $(REC) $(BASIC)
+my_graph: my_graph.o my_mat.o
+	$(CC) $(CFLAGS) -o my_graph my_graph.o my_mat.o
 
-recursived: libclassrec.so
-libclassrec.so: $(REC) $(BASIC)
-	$(CC) -shared -o libclassrec.so $(REC) $(BASIC)
+my_graph.o: my_graph.c my_mat.h
+	$(CC) $(CFLAGS) -c my_graph.c -o my_graph.o
 
-looped: libclassloops.so
-libclassloops.so: $(LOOP) $(BASIC)
-	$(CC) -shared -o libclassloops.so $(LOOP) $(BASIC)
+my_mat.o: my_mat.c my_mat.h
+	$(CC) $(CFLAGS) -c my_mat.c -o my_mat.o
 
-mains: $(MAIN) libclassrec.a
-	$(CC) $(FLAGS) -o mains $(MAIN) libclassrec.a
+my_Knapsack: my_Knapsack.o
+	$(CC) $(CFLAGS) -o my_Knapsack my_Knapsack.o
 
-maindloop: $(MAIN)
-	$(CC) $(FLAGS) -o maindloop $(MAIN) ./libclassloops.so
-
-maindrec: $(MAIN)
-	$(CC) $(FLAGS) -o maindrec $(MAIN) ./libclassrec.so
-
-main.o: $(MAIN) $(NUMCLASS)
-	$(CC) $(FLAGS) -c main.c
-
-basicClassification.o: basicClassification.c $(NUMCLASS)
-	$(CC) $(FLAGS) -fPIC -c basicClassification.c
-
-advancedClassificationLoop.o: advancedClassificationLoop.c $(NUMCLASS)
-	$(CC) $(FLAGS) -fPIC -c advancedClassificationLoop.c
-
-advancedClassificationRecursion.o: advancedClassificationRecursion.c $(NUMCLASS)
-	$(CC) $(FLAGS) -fPIC -c advancedClassificationRecursion.c
-
-
-.PHONY: clean all
+my_Knapsack.o: my_Knapsack.c
+	$(CC) $(CFLAGS) -c my_Knapsack.c -o my_Knapsack.o
 
 clean:
-		rm -f *.o *.a *.so mains maindrec maindloop
+	rm -f *.o my_graph my_Knapsack
