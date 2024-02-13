@@ -12,6 +12,14 @@ int max(int a, int b){
 
 }
 
+int compare(const void *a, const void *b) {
+    float ratio_a = *((float *)a);
+    float ratio_b = *((float *)b);
+    if (ratio_a > ratio_b) return -1;
+    if (ratio_a < ratio_b) return 1;
+    return 0;
+}
+
 int main(){
     int num;
     char place;
@@ -31,38 +39,29 @@ int main(){
 
 }
 
-int compare(const void *a, const void *b) {
-    float ratio_a = *((float *)a);
-    float ratio_b = *((float *)b);
-    if (ratio_a > ratio_b) return -1;
-    if (ratio_a < ratio_b) return 1;
-    return 0;
-}
 
 int knapsack(int values[], int weights[], int selected_bool[]) {
-    int k[6][21] = {0};
-    int m=20;
-    int n=5;
-    int Before;
-    int before1;
-    for (int i = 1; i <= 5; i++)
+    int k[SIZE+1][MAX+1] = {0};
+    int val_org;
+    int wei_org;
+    for (int i = 1; i <= SIZE; i++)
     {
-        for (int j = 1; j <= 20; j++)
+        for (int j = 1; j <= MAX; j++)
         {
             if(i>0||j>0){
                 k[i][j] = 0;
             }
         }
     }
-    for (int i = 1; i <= 5; i++)
+    for (int i = 1; i <= SIZE; i++)
     {
-        for (int j = 1; j <= 20; j++)
+        for (int j = 1; j <= MAX; j++)
         {
-            Before = values[i-1];
-            before1 = weights[i-1];
-            if (before1 <= j)
+            val_org = values[i-1];
+            wei_org = weights[i-1];
+            if (wei_org <= j)
             {
-                k[i][j] = max(Before + k[i-1][j-before1], k[i-1][j]);
+                k[i][j] = max(val_org + k[i-1][j-wei_org], k[i-1][j]);
             }
             else
             {
@@ -71,9 +70,9 @@ int knapsack(int values[], int weights[], int selected_bool[]) {
         }
 
     }
-    int total123 = k[5][20];
-    int s=20;
-    int r=5;
+    int total123 = k[SIZE][MAX];
+    int s = MAX;
+    int r = SIZE;
     while (r > 0 && s> 0)
     {
         if (k[r][s] != k[r-1][s])
@@ -138,5 +137,5 @@ int knapsack(int values[], int weights[], int selected_bool[]) {
 
 
 
-    return total123;
+    return 0;
 }
