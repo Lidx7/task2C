@@ -1,5 +1,5 @@
 #include <stdio.h>
 
-void get_matrix();
-int isShortest();
-int shortestPath();
+void getMatrix();
+int isShortest(int x, int y);
+int shortestPath(int x, int y);

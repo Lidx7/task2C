@@ -1,24 +1,39 @@
 CC = gcc
-CFLAGS = -Wall
+AR = ar
+M_GR = my_graph.c
+M_M = my_mat.o
+M_K = my_Knapsack.c
+M_MH = my_mat.h
+FLAGS = -Wall -g
 
-.PHONY: all clean
+all: graphs graphsd my_Knapsack my_graph
 
-all: my_graph my_Knapsack
+graphs: libgraph.a
+libgraph.a: $(M_M)
+	$(AR) -rcs libgraph.a $(M_M)
 
-my_graph: my_graph.o my_mat.o
-	$(CC) $(CFLAGS) -o my_graph my_graph.o my_mat.o
 
-my_graph.o: my_graph.c my_mat.h
-	$(CC) $(CFLAGS) -c my_graph.c -o my_graph.o
+graphsd: libgraph.so
+libgraph.so: $(M_M)
+	$(CC) -shared -o libgraph.so $(M_M)
 
-my_mat.o: my_mat.c my_mat.h
-	$(CC) $(CFLAGS) -c my_mat.c -o my_mat.o
+my_Knapsack: $(M_K)
+	$(CC) $(FLAGS) -o my_Knapsack $(M_K)
 
-my_Knapsack: my_Knapsack.o
-	$(CC) $(CFLAGS) -o my_Knapsack my_Knapsack.o
+my_Knapsack.o: $(M_K)
+	$(CC) $(FLAGS) -fPIC -c $(M_K)
 
-my_Knapsack.o: my_Knapsack.c
-	$(CC) $(CFLAGS) -c my_Knapsack.c -o my_Knapsack.o
+my_graph: $(M_GR) libgraph.a
+	$(CC) $(FLAGS) -o my_graph $(M_GR) libgraph.a
+
+my_graph.o: $(M_GR) $(M_MH)
+	$(CC) $(FLAGS) -fPIC -c $(M_GR)
+
+my_mat.o: $(M_MH) my_mat.c
+	$(CC) $(FLAGS) -fPIC -c my_mat.c
+
+
+.PHONY: clean all
 
 clean:
-	rm -f *.o my_graph my_Knapsack
+	rm -f *.o *.a *.so my_graph my_Knapsack
