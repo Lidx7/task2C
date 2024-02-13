@@ -10,7 +10,7 @@ int main(){
     int y = 0;
 
 
-    printf("Choose an action \nFor function 1, type 'A' \nFor function 2, type 'B' \nFor function 3, type 'C' \nTo exit, type 'D' or EOF \n");
+    //printf("Choose an action \nFor function 1, type 'A' \nFor function 2, type 'B' \nFor function 3, type 'C' \nTo exit, type 'D' or EOF \n");
     while(1){
 
         scanf(" %c", &action);
@@ -28,9 +28,9 @@ int main(){
                 int ans = isShortest(x, y);
 
                 if(ans == 1)
-                    printf("True \n");
+                    printf("True\n");
                 else
-                    printf("False \n");
+                    printf("False\n");
 
                 break;
 
@@ -39,7 +39,7 @@ int main(){
                 scanf("%d", &x);
                 scanf("%d", &y);
 
-                printf("%d \n", shortestPath(x, y));
+                printf("%d\n", shortestPath(x, y));
                 break;
 
             case 'D':

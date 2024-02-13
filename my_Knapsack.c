@@ -5,6 +5,7 @@
 #define MIN 0
 
 int knapsack(int weights[], int values[], int selected_bool[]);
+
 int max(int a, int b){
     if (a > b) return a;
     return b;
@@ -24,6 +25,7 @@ int main(){
         values[i] = num;
         scanf("%d ", &num);
         weights[i] = num;  
+        
     }
     knapsack(values, weights, selected_bool);
 
@@ -38,78 +40,103 @@ int compare(const void *a, const void *b) {
 }
 
 int knapsack(int values[], int weights[], int selected_bool[]) {
-    // int max = 20;
-    // int min = 0;
-    // int total = 0;
-    // float ratio[SIZE] = {0};
-    // for (int i = 0; i < SIZE; i++) {
-    //     ratio[i] = (float)weights[i] / values[i];
-    // }
-    
-    // qsort(ratio, SIZE, sizeof(float), compare);
-    // int i = 0;
-    // int koren_s = 0;
-    // while (min < max&& koren_s<SIZE ) {
-    //     for (int k = 4; k > -1; k--) {
-    //         for (int i = 0; i < SIZE; i++) {
-    //         if (ratio[k] == (float)weights[i]/ values[i]) {
-    //             if (min + weights[i] <= max) {
-    //                 total += values[i];
-    //                 min += weights[i];
-    //                 selected_bool[i] = 1;
-    //             }
-    //         }
-    //     }
-    //     koren_s++;}
-    // }
+    int k[6][21] = {0};
     int m=20;
     int n=5;
-    int weights1[6]={0};
-    int values1[6]={0};
-    for (int i = 1; i < SIZE+1; i++) {
-        weights1[i] = weights[i-1];
-        values1[i] = values[i-1];
-    }
-    int k[6][21];
-    for (int i = 0; i <= n; i++) {
-       for (int  w = 0; w <=m; w++) {
-            if (i==0||w==0){
-                k[i][w]=0;}
-                else if (weights1[i]<=w){
-                    k[i][w]=max(values1[i]+k[i-1][w-weights1[i]],k[i-1][w]);
-                }
-                else{
-                    k[i][w]=k[i-1][w];
-                }
-            }
-            }
-    int total123 = k[5][20];
-    while (n>0 && m>0){
-        if (k[n][m]!=k[n-1][m]){
-            selected_bool[n]=1;
-            n--;
-            m=m-weights1[n];
-        }
-        else{
-            n--;
-        }
-    }
+    int Before;
+    int before1;
+    for (int i = 1; i <= 5; i++)
     {
-        /* code */
+        for (int j = 1; j <= 20; j++)
+        {
+            if(i>0||j>0){
+                k[i][j] = 0;
+            }
+        }
     }
-    int total_new =0;
-    char selected_bool11[] ={'A','B','C','D','E'};
-    printf("Items that give the maximum profit: [");
+    for (int i = 1; i <= 5; i++)
+    {
+        for (int j = 1; j <= 20; j++)
+        {
+            Before = values[i-1];
+            before1 = weights[i-1];
+            if (before1 <= j)
+            {
+                k[i][j] = max(Before + k[i-1][j-before1], k[i-1][j]);
+            }
+            else
+            {
+                k[i][j] = k[i][j-1];
+            }
+        }
+
+    }
+    int total123 = k[5][20];
+    int s=20;
+    int r=5;
+    while (r > 0 && s> 0)
+    {
+        if (k[r][s] != k[r-1][s])
+        {
+            selected_bool[r-1] = 1;
+            s -= weights[r-1];
+        }
+        r--;
+    }
+
+    char selected_bool11[] ={'a','b','c','d','e'};
+    int place = 0;
+
+    printf("Maximum profit: %d\n", total123);
+    printf("Selected items: ");
     for (int i = 0; i < SIZE; i++) {
         if (selected_bool[i] == 1) {
-             total_new += values[i];
-            printf("%c ", selected_bool11[i]);
+            if(place != 0) printf(" ");
+            printf("%c", selected_bool11[i]);
+            place++;
         }
     }
-    total123 = k[5][20];
-    printf("]\n");
-    printf("%d\n", total123);
 
 
-    return total_new;
+    // for(int i = 0; i < SIZE; i++) {
+    //     if(selected_bool[i] == 1) {
+    //         if(place != 0) printf(" ");
+    //         place++;
+
+    //         switch (i) {
+    //             case 0:
+    //                 printf("a");
+    //                 break;
+    //             case 1:
+    //                 printf("b");
+    //                 break;
+    //             case 2:
+    //                 printf("c");
+    //                 break;
+    //             case 3:
+    //                 printf("d");
+    //                 break;
+    //             case 4:
+    //                 printf("e");
+    //                 break;
+    //         }
+    //     }
+    // }
+
+
+    // for (int i = 0; i < SIZE; i++) {
+    //     if (selected_bool[i] == 1) {
+    //         total_new += values[i];
+    //         selected_result[place*2] = selected_bool11[i];
+    //         selected_result[place+1] = ' ';
+    //         last_char = place+1;
+    //         place *= 2;
+    //     }
+    // }
+    // selected_result[last_char] = '\0';
+    // printf("%s\n", selected_result);
+
+
+
+    return total123;
 }
